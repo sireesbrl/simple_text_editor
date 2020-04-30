@@ -41,7 +41,6 @@ menubar.add_cascade(label = "File", menu = filemenu, background = "black", foreg
 
 edit = Menu(menubar, tearoff = 0)
 edit.add_command(label = "Fonts", command = select_fonts, background = "black", foreground = "white")
-# edit.add_cascade(label = "Fonts",menu = edit, background = "black", foreground = "white")
 menubar.add_cascade(label = "Edit", menu = edit, background = "black", foreground = "white")
 
 help_menu = Menu(menubar, tearoff = 0)
