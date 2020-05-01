@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 from tkinter import filedialog as fd
-import time
+
 
 window = tk.Tk(className="Editor")  #forms a window through the tkinter module
 
