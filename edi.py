@@ -2,26 +2,69 @@ import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 from tkinter import filedialog as fd
+import time
 
 window = tk.Tk(className="Editor")  #forms a window through the tkinter module
 
 def saveas(): #basic function for saving file
     global text  
     txt = text.get("1.0", "end-1c") #return text index to index
-    file_name = fd.asksaveasfilename()
-    doc=open(file_name, "w+") #write file in a location
+    filename = fd.asksaveasfilename()
+    doc=open(filename, "w+") #write file in a location
     doc.write(txt)
     doc.close()
 
+filename = ""
 
 def open_file():
+    global filename
+    global text
+    original = text.get("1.0", "end-1c")
     filename = fd.askopenfilename(initialdir = "/home", title = "Select file")
     f = open(filename)
-    text = f.read()      #can't insert the data from the file to the window for now
+    txt = f.read()
+    if txt == original or original == "":
+        text.delete("1.0", "end")
+        text.insert(chars = txt, index = "1.0")
+    else:
+        choice = messagebox.askyesno(title = NONE, message = "File not saved. Do you want to save it?")
+        if choice == "yes":
+            try:
+                if filename == "":     #filename isn't valid variable to check this for initial nameless document
+                    saveas()           #need a variable to hold initial nameless document's data for this logic to work
+                    text.delete("1.0", "end")
+                    text.insert(chars = txt, index = "1.0")       
+                else:    
+                    save()
+                    text.delete("1.0", "end")
+                    text.insert(chars = txt, index = "1.0")
+                
+            except:
+                pass           
+                    
+        else:
+            text.delete("1.0", "end")
+            text.insert(chars = txt, index = "1.0")
 
 
 def save():
+    global filename
+    global text  
+    try:
+        txt = text.get("1.0", "end-1c")
+        doc=open(filename, "w+") #write file in a location
+        doc.write(txt)
+        doc.close()
+    except:
+        saveas()
+
+
+def new_file():
+    # global filename
+    # filename = fd.askopenfile(initialdir = "/home", title = "Create a new file")
+    # f = open(filename, "w+")
     pass
+
 
 
 def about():
@@ -55,6 +98,7 @@ def light_mode():
 menubar = Menu(window)
 
 filemenu = Menu(menubar, tearoff = 0)
+filemenu.add_command(label = "New", command = new_file, background = "black", foreground = "white")
 filemenu.add_command(label = "Open", command = open_file, background = "black", foreground = "white")
 filemenu.add_command(label = "Save",command = save, background = "black", foreground = "white")
 filemenu.add_command(label = "Save As", command = saveas, background = "black", foreground = "white")
